@@ -1,14 +1,10 @@
 package com.learning.cruddemo.controllers;
 
+import com.learning.cruddemo.Service.RoleService;
 import com.learning.cruddemo.exceptions.ResourceNotFoundException;
-import com.learning.cruddemo.exceptions.UserLoginException;
 import com.learning.cruddemo.models.Role;
-import com.learning.cruddemo.repositories.IRoleRepository;
-import com.learning.cruddemo.utils.APIResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.ErrorResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,23 +13,34 @@ import java.util.List;
 @RequestMapping("/api/v1/roles")
 @RequiredArgsConstructor
 public class RoleController {
+    @Autowired
 
-    private  final IRoleRepository roleRepository;
+    private RoleService roleService;
 
 
-    @GetMapping
-    public List<Role> getAll(){
-        return roleRepository.findAll();
+    @PostMapping
+   public String createRole(Role role){
+         roleService.createRole(role);
+        return "created successfully";
     }
     @GetMapping("/{id}")
     public Role getById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
-        return roleRepository.findById(id).orElseThrow(
+        return roleService.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("exceptions.notFound","Role", "id", id));
     }
-    @PostMapping
-    public Role getById( @Valid @RequestBody Role dto) throws UserLoginException {
-        if(dto.getName()==null) throw  new UserLoginException("Name is mandatory");
-        return roleRepository.save(dto);
+
+    @PutMapping("/roles")
+    public Role updateRole(@RequestBody Role role){
+        return roleService.updateRole(role);
+    }
+    @DeleteMapping("/{id}")
+    public Role deleteRole(@PathVariable("id") Long id) {
+        return roleService.deleteRole(id);
+    }
+
+    @GetMapping("/roles")
+    public List<Role> listAllRole(){
+        return roleService.listAllRole();
     }
 
 }

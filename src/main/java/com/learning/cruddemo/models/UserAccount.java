@@ -24,8 +24,8 @@ public class UserAccount {
 
     private String phoneNumber;
 
-    @ManyToOne
-    private Role role;
+   // @ManyToOne
+   // private Role role;
 
     @JsonIgnore
     private String password;

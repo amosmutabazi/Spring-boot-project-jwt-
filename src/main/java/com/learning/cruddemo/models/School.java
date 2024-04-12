@@ -1,21 +1,26 @@
 package com.learning.cruddemo.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-public class Role {
+@NoArgsConstructor
+@AllArgsConstructor
+@Table (name = "school_db")
+
+public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String role_name;
+    private String name;
+    private String slogan;
+    private String email;
 
-    private String role_description;
+
 }
+
+
