@@ -1,5 +1,7 @@
-package com.learning.cruddemo.Service;
+package com.learning.cruddemo.Service.impl;
 
+import com.learning.cruddemo.Service.DepartmentService;
+import com.learning.cruddemo.exceptions.DepartmentNotFoundException;
 import com.learning.cruddemo.models.Department;
 import com.learning.cruddemo.repositories.DepartmentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,7 @@ import java.util.Optional;
 
 @Service
 
-public class DepartmentServiceImpl implements DepartmentService{
+public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentRepo departmentRepo;
     @Override
@@ -21,8 +23,13 @@ public class DepartmentServiceImpl implements DepartmentService{
     }
 
     @Override
-    public Optional<Department> getDepartmentById(Long dept_id) {
-        return departmentRepo.findById(dept_id);
+    public Optional<Department> getDepartmentById(Long dept_id) throws DepartmentNotFoundException {
+        Optional<Department> department =
+                departmentRepo.findById(dept_id);
+        if (department.isEmpty()){
+            throw new DepartmentNotFoundException("Department Not Found");
+        }
+        return department;
     }
 
 
@@ -35,9 +42,9 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Override
     public Department updateDepartment(Department department, Long dept_id) {
         Department depDB = departmentRepo.findById(dept_id).get();
-        if (Objects.nonNull(department.getDept_name())
-        && !"".equalsIgnoreCase(department.getDept_name())){
-            depDB.setDept_name(department.getDept_name());
+        if (Objects.nonNull(department.getDeptname())
+        && !"".equalsIgnoreCase(department.getDeptname())){
+            depDB.setDeptname(department.getDeptname());
         }
         if (Objects.nonNull(department.getDept_address())
                 && !"".equalsIgnoreCase(department.getDept_address())){
@@ -53,5 +60,10 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Override
     public List<Department> getAllDepartment() {
         return departmentRepo.findAll();
+    }
+
+    @Override
+    public Department getDepartmentByName(String deptName) {
+        return departmentRepo.findByDeptname(deptName);
     }
 }

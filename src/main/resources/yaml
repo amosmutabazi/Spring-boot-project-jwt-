@@ -1,0 +1,25 @@
+swagger: '2.0'
+info:
+  title: Learning project APIs Documentation
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Get all users
+      responses:
+        '200':
+          description: A list of users
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user to get
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: The user object
+        '404':
+          description: User not found

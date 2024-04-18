@@ -1,10 +1,12 @@
 package com.learning.cruddemo.exceptions;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Date;
 
+@Getter
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class ResourceNotFoundException extends Exception {
     private final Date timestamp;
@@ -16,12 +18,5 @@ public class ResourceNotFoundException extends Exception {
         this.timestamp = new Date();
     }
 
-    public Object[] getArgs() {
-        return args;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
 }
 

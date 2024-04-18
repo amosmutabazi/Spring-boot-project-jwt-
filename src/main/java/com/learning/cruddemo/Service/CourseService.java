@@ -17,4 +17,6 @@ public interface CourseService {
 
 
     Course updateCourse(Course course, Long id) throws ResourceNotFoundException;
+
+    public Course getCourseByName(String name);
 }

@@ -1,5 +1,7 @@
-package com.learning.cruddemo.Service;
+package com.learning.cruddemo.Service.impl;
 
+import com.learning.cruddemo.Service.CourseService;
+import com.learning.cruddemo.exceptions.CourseNotFoundException;
 import com.learning.cruddemo.exceptions.ResourceNotFoundException;
 import com.learning.cruddemo.models.Course;
 import com.learning.cruddemo.repositories.CourseRepo;
@@ -11,7 +13,7 @@ import java.util.Optional;
 
 @Service
 
-public class CourseServiceImp implements CourseService{
+public class CourseServiceImp implements CourseService {
     @Autowired
     private CourseRepo courseRepo;
 
@@ -23,6 +25,9 @@ public class CourseServiceImp implements CourseService{
 
     @Override
     public Optional<Course> getCourseById(Long id) {
+        if (courseRepo.findById(id).isEmpty()) {
+        throw new CourseNotFoundException("Course not found");
+        }
         return courseRepo.findById(id);
     }
 
@@ -50,6 +55,11 @@ public class CourseServiceImp implements CourseService{
 
         // Save the updated course
         return courseRepo.save(existingCourse);
+    }
+
+    @Override
+    public Course getCourseByName(String name) {
+        return courseRepo.findByNameIgnoreCase(name);
     }
 
 
